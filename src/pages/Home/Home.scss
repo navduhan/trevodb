@@ -1,0 +1,41 @@
+@import "../../scss/colors";
+@import "../../scss/globals";
+
+.separator{
+	text-align: center;
+	padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+
+.purpose{
+	text-align:justify;
+	// max-width: 600px;
+    margin: auto;
+    border-radius: 12px;
+}
+
+.cardd{
+	text-align:justify;
+	// max-width: 600px;
+    padding:10px;
+}
+.divider{
+	z-index: 0;
+    position: relative;
+    height: 2px;
+    background-color:#F16278;
+    display: block;
+    // margin-top: -12px;
+    margin: auto;
+    text-align: center;
+}
+
+.fieldset {
+    border: 1px solid #d8d8d8;
+    padding: 0.1em 0.5em 0.2em 0.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.5em;
+    border-radius: 10px;
+  }
+
