@@ -137,17 +137,14 @@ export default class Search extends React.Component {
 
     // console.log(data.values())
 
-    for (var pair of data.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]);
-      }
     
-    // fetchBlast(data)
-    //   .then(res => { // then print response status
-    //     console.log(res)
-    //     this.closeModel();
-    //     window.open("/ranchsatdb/blastresults", "_blank");
-    //     localStorage.setItem('resultb', JSON.stringify(res))
-    //   })
+    fetchBlast(data)
+      .then(res => { // then print response status
+        console.log(res)
+        this.closeModel();
+        // window.open("/trevodb/blastresults", "_blank");
+        // localStorage.setItem('resultb', JSON.stringify(res))
+      })
   }
 
 
@@ -289,6 +286,9 @@ CGTGGTGACGCTGAATGCACGGGGAGGTGACGCTCCCTGGATTGGCACGTTATTCATC`;
                   <Radio value="blastn" onClick={this.blastToolHandler}>
                     blastn
                   </Radio>
+                  <Radio value="blastx" onClick={this.blastToolHandler}>
+                    blastx
+                  </Radio>
                 </Radio.Group>
               )}
               {this.state.seqType === 'prot' && (
@@ -297,9 +297,7 @@ CGTGGTGACGCTGAATGCACGGGGAGGTGACGCTCCCTGGATTGGCACGTTATTCATC`;
                   <Radio value="blastp" onClick={this.blastToolHandler}>
                     blastp
                   </Radio>
-                  <Radio value="blastx" onClick={this.blastToolHandler}>
-                    blastx
-                  </Radio>
+                  
                 </Radio.Group>
               )}
 

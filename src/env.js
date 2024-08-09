@@ -1,4 +1,4 @@
 export const env = {
     BASE_URL : '/trevodb',
-    BACKEND : 'https://localhost'
+    BACKEND : 'http://localhost:3200'
 }
