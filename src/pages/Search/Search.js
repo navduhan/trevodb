@@ -7,6 +7,7 @@ import FileInput from '../../components/FileInput/Fileinput';
 import "./search.scss";
 import test from './test.gif'
 import { fetchBlast } from "./fetchBlast";
+import { fetchPhylo } from "./fetchPhylo";
 
 export default class Search extends React.Component {
   constructor(props) {
@@ -31,15 +32,15 @@ export default class Search extends React.Component {
     this.segmentHandler = this.segmentHandler.bind(this);
     this.strainHandler = this.strainHandler.bind(this);
     this.analysisTypeHandler = this.analysisTypeHandler.bind(this);
-    this.getPhylogeny = this.getPhylogeny.bind(this);
-    this.fileSelected = this.fileSelected.bind(this);
-    this.handleSeqChange = this.handleSeqChange.bind(this);
     this.msaToolHandler = this.msaToolHandler.bind(this);
     this.phyloMethodHandler = this.phyloMethodHandler.bind(this);
     this.blastToolHandler = this.blastToolHandler.bind(this);
     this.getWord = this.getWord.bind(this);
     this.getTarget = this.getTarget.bind(this);
     this.getEvalue = this.getEvalue.bind(this);
+    this.fileSelected = this.fileSelected.bind(this);
+    this.handleSeqChange = this.handleSeqChange.bind(this);
+    this.getPhylogeny = this.getPhylogeny.bind(this);
     this.runBlast = this.runBlast.bind(this);
   }
 
@@ -87,20 +88,14 @@ export default class Search extends React.Component {
   }
 
   getWord = (value) => {
-
     this.setState({
-      word: parseInt(value)
-    }, () => {
-
+      word: parseInt(value)}, () => {
     });
   }
 
   getTarget = (value) => {
-
     this.setState({
-      target: parseInt(value)
-    }, () => {
-
+      target: parseInt(value)}, () => {
     });
   }
 
@@ -115,13 +110,31 @@ export default class Search extends React.Component {
       filename: fileText.target.files[0], seqtxt: ''
     });
   }
-  handleSeqChange(e) {
 
+  handleSeqChange(e) {
     this.setState({
       seqtxt: e.target.value, filename: ''
     });
   }
-  getPhylogeny() { }
+  
+  getPhylogeny() { 
+    this.openModel();
+    const data = new FormData()
+    data.append('file', this.state.filename)
+    data.append('genome', this.state.segmentType)
+    data.append('seqtype', this.state.seqType)
+    data.append('seqtxt', this.state.seqtxt)
+    data.append('msatool', this.state.msatool)
+    data.append('phylomethod', this.state.phylomethod)
+
+    console.log(data.values())
+
+    fetchPhylo(data)
+    .then(res => {
+      console.log(res)
+      this.closeModel();
+    })
+   }
 
   runBlast() {
     this.openModel();
@@ -135,16 +148,15 @@ export default class Search extends React.Component {
     data.append('evalue', this.state.evalue)
     data.append('program', this.state.bprog)
 
-    // console.log(data.values())
-
+    console.log(data.values())
     
     fetchBlast(data)
-      .then(res => { // then print response status
-        console.log(res)
-        this.closeModel();
-        // window.open("/trevodb/blastresults", "_blank");
-        // localStorage.setItem('resultb', JSON.stringify(res))
-      })
+    .then(res => { // then print response status
+    console.log(res)
+    this.closeModel();
+    window.open("/trevodb/blastresults", "_blank");
+    localStorage.setItem('resultb', res)
+    })
   }
 
 
@@ -187,6 +199,7 @@ CGTGGTGACGCTGAATGCACGGGGAGGTGACGCTCCCTGGATTGGCACGTTATTCATC`;
         <div className="row flex-lg-row justify-content-center mt-2">
           <Divider />
           <h2 className="my-3">Search <i>trevoDB</i></h2>
+
           <Divider />
           <div className="col-md-3 my-3">
             <Radio.Group name="radiogroup" defaultValue={"nucl"}>
@@ -199,6 +212,7 @@ CGTGGTGACGCTGAATGCACGGGGAGGTGACGCTCCCTGGATTGGCACGTTATTCATC`;
               </Radio>
             </Radio.Group>
           </div>
+
           <div className="col-md-6 mb-3">
             <Radio.Group name="radiogroup" defaultValue={"M2"}>
               <h5>Select Segment</h5>
@@ -241,6 +255,7 @@ CGTGGTGACGCTGAATGCACGGGGAGGTGACGCTCCCTGGATTGGCACGTTATTCATC`;
           </div>
           <Divider />
         </div>
+
         <div className="row flex-lg-row justify-content-center mt-3">
           <div className="col-md-9 my-3">
             <Radio.Group name="radiogroup" defaultValue={"TRV"}>
@@ -264,6 +279,7 @@ CGTGGTGACGCTGAATGCACGGGGAGGTGACGCTCCCTGGATTGGCACGTTATTCATC`;
           </div>
           <Divider />
         </div>
+
         <div className="row justify-content-center my-3">
           <Radio.Group name="radiogroup" defaultValue={"blast"}>
             <h5>Select a Analysis to Perform</h5>
@@ -275,6 +291,7 @@ CGTGGTGACGCTGAATGCACGGGGAGGTGACGCTCCCTGGATTGGCACGTTATTCATC`;
             </Radio>
           </Radio.Group>
         </div>
+
         <Divider />
         {this.state.atype === 'blast' && (
           <div className="row justify-content-center my-3">
@@ -282,7 +299,6 @@ CGTGGTGACGCTGAATGCACGGGGAGGTGACGCTCCCTGGATTGGCACGTTATTCATC`;
               {this.state.seqType === 'nucl' && (
                 <Radio.Group name="radiogroup" defaultValue={"blastn"}>
                   <h5>Select Blast Variant</h5>
-
                   <Radio value="blastn" onClick={this.blastToolHandler}>
                     blastn
                   </Radio>
@@ -297,28 +313,27 @@ CGTGGTGACGCTGAATGCACGGGGAGGTGACGCTCCCTGGATTGGCACGTTATTCATC`;
                   <Radio value="blastp" onClick={this.blastToolHandler}>
                     blastp
                   </Radio>
-                  
                 </Radio.Group>
               )}
-
-
-
-
             </div>
+
             <div className="col-md-3">
               <label className='h5'>Maximum Target Sequences</label>
               <Slider defaultValue={5} marks={{ 1: '1', 50: '50' }} disabled={false} min={1} max={50} onChange={this.getTarget} />
             </div>
+
             <div className="col-md-3">
               <label className='h5'>Word Size</label>
               <Slider defaultValue={20} marks={{ 1: '1', 50: '50' }} disabled={false} min={1} max={50} onChange={this.getWord} />
             </div>
+
             <div className="col-md-3">
               <label className='h5'>Exprected Threshold value</label>
               <input className="form-control" type='text' placeholder="0.01" defaultValue={this.state.evalue} onChange={this.getEvalue}></input>
             </div>
           </div>
         )}
+
         <Divider />
         {this.state.atype !== 'blast' && (
           <div className="row justify-content-center">
@@ -336,6 +351,7 @@ CGTGGTGACGCTGAATGCACGGGGAGGTGACGCTCCCTGGATTGGCACGTTATTCATC`;
                 </Radio>
               </Radio.Group>
             </div>
+
             <div className="col-md-4 my-3">
               <Radio.Group name="radiogroup" defaultValue={"ml"}>
                 <h5>Select Phylogeny Method</h5>
@@ -367,7 +383,6 @@ CGTGGTGACGCTGAATGCACGGGGAGGTGACGCTCCCTGGATTGGCACGTTATTCATC`;
           <div className="col-md-1 mt-5"><b>OR</b></div>
           <div className="col-md-3 mb-5">
             <h5 className="mt-5 pl-2"> Upload Sequence File</h5>
-
             <FileInput handler={this.fileSelected} />
           </div>
         </div>
@@ -375,7 +390,6 @@ CGTGGTGACGCTGAATGCACGGGGAGGTGACGCTCCCTGGATTGGCACGTTATTCATC`;
         <Divider />
         <div className="row flex-lg-row justify-content-center g-2 my-5">
           {this.state.isOpen && (
-
             <div className="col-md-8">
               <h5 className="mb-3">Please wait your query is processing</h5>
               <img
@@ -392,8 +406,7 @@ CGTGGTGACGCTGAATGCACGGGGAGGTGACGCTCCCTGGATTGGCACGTTATTCATC`;
                 className="kbl-btn-1  mx-3"
                 size="lg"
                 onClick={this.runBlast}
-              >
-                Run Analysis{" "}
+              >Run Analysis{" "}
               </Button>
             </div>
           )}

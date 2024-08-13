@@ -8,6 +8,7 @@ import Home from './pages/Home/Home';
 import Search from './pages/Search/Search';
 import ViewTree from './pages/Tree/Tree';
 import Login from './pages/Login/Login';
+import { BlastResult } from './pages/Search/BlastResult';
 
 import {
     BrowserRouter as Router,
@@ -34,6 +35,7 @@ export class TREVODB extends Component {
                 <Route path={`${env.BASE_URL}/search`}  element={<Search />} />
                 <Route path={`${env.BASE_URL}/tree`}  element={<ViewTree/>} />
                 <Route path={`${env.BASE_URL}/login`}  element={<Login/>} />
+                <Route path={`${env.BASE_URL}/blastresults`}  element={<BlastResult/>} />
            
                     
                     
