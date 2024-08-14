@@ -155,7 +155,7 @@ export default class Search extends React.Component {
     console.log(res)
     this.closeModel();
     window.open("/trevodb/blastresults", "_blank");
-    localStorage.setItem('resultb', res)
+    localStorage.setItem('resultb', JSON.stringify(res))
     })
   }
 

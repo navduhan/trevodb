@@ -3,11 +3,12 @@ import { Divider, Button } from 'antd';
 import Table from 'react-bootstrap/Table'
 import './BlastResult.scss'
 import {downloadBlast} from '../../components/CSVDownload/BlastDownload';
+import BlastAlignment from "./BlastAlignment";
 
-const resud = Object.keys(JSON.parse(localStorage.getItem('resultb')));
+const resud = JSON.parse(localStorage.getItem('resultb'));
 
 console.log(typeof(resud))
-const dfiled = ['query_title', 'hitDesc', 'identity', 'align_length', 'mismatch', 'gaps', 'query_start', 'query_end', 'subject_start', 'subject_end', 'evalue', 'bit_score'];
+const dfiled = ['query_title', 'hitTitle', 'identity', 'align_length', 'mismatch', 'gaps', 'query_start', 'query_end', 'subject_start', 'subject_end', 'evalue', 'bit_score'];
 
 export class BlastResult extends Component {
 
@@ -37,6 +38,7 @@ export class BlastResult extends Component {
                             <th >Subject End</th>
                             <th >Evalue</th>
                             <th >Score</th>
+                            <th>Alignment</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,11 +52,13 @@ export class BlastResult extends Component {
 
 
                                 ))}
+                                <td>View</td>
                             </tr>
                         ))}
                     </tbody>
                     </Table>
                     </div>
+                    <BlastAlignment alignments={resud}/>
             </div>
             </div>
         )

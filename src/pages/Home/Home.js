@@ -64,11 +64,11 @@ export default class Home extends React.Component {
                         <legend>
                           <strong>TAXONOMY</strong>
                         </legend>
-                        <a href="https://viralzone.expasy.org/293" target="_blank">Group III: dsRNA viruses</a>
+                        <a href="https://viralzone.expasy.org/293" target="_blank" rel="noreferrer">Group III: dsRNA viruses</a>
                         <br />
                         Family:{" "}
                         <i>
-                          <a href="https://viralzone.expasy.org/104"target="_blank" >Spinareoviridae</a>
+                          <a href="https://viralzone.expasy.org/104"target="_blank" rel="noreferrer" >Spinareoviridae</a>
                         </i>
                         <br />
                         Genus:{" "}
